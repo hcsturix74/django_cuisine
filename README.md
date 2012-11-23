@@ -7,7 +7,10 @@ Store your recipes with your favourite wines
 ``django_cuisine`` is a simple django application for managing
 your recipes linked to your suggested wines
 
-As I'm fond of cooking, I coded this application to store my favourites recipes 
+As I'm fond of cooking, I coded this application to store my favourites recipes
+This project is based on django-recipes application which can be found at:
+http://code.google.com/p/django-recipes/
+
 
 Dependecies
 -----------

@@ -29,7 +29,7 @@ ADMIN LOGIN:
   username: admin
   password: admin
 
-You can, of course, delete the DB (graphdb) and perform a syncdb:
+You can, of course, delete the DB (djcuisinedb) and perform a syncdb:
 
 python manage.py syncdb
 

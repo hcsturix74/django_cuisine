@@ -41,8 +41,8 @@ class GenericBaseModel(models.Model):
     applications
     """
     is_published = models.BooleanField(blank=True, default=True, verbose_name=_('Published'))
-    created = models.DateTimeField(verbose_name=_('Creation Date'), default=datetime.datetime.now())
-    updated = models.DateTimeField(verbose_name=_('Modify Date'), default=datetime.datetime.now())
+    created = models.DateTimeField(verbose_name=_('Creation Date'), default=datetime.datetime.now(), editable=False)
+    updated = models.DateTimeField(verbose_name=_('Modify Date'), default=datetime.datetime.now(), editable=False)
     objects = models.Manager()
     pub_objects = PublishedManager()
 
@@ -248,11 +248,11 @@ class Ingredient(GenericBaseModel):
     """
     Ingredient class - inherits from GenericBaseModel
     """
-    quantity = models.FloatField(verbose_name=_('Unit Type'))
+    quantity = models.FloatField(verbose_name=_('Quantity'))
     unit = models.ForeignKey(Unit, verbose_name=_('Unit'), null=True, blank=True)
     recipe = models.ForeignKey(Recipe, verbose_name=_('Recipe'))
     food = models.ForeignKey(Food, verbose_name=_('Food'))
-    order = models.PositiveIntegerField(verbose_name=_('Food'), blank=True, null=True)
+    order = models.PositiveIntegerField(verbose_name=_('Order'), blank=True, null=True)
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)

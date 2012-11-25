@@ -52,10 +52,10 @@ class CountryAdmin(admin.ModelAdmin):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'summary', 'preparation_time',)
-    fields = ('title', 'category', 'summary', 'preparation_time',)
-    list_filter = ('title',)
+    list_display = ('title', 'summary', 'preparation_time', 'is_for_vegan', 'is_for_vegetarian',)
+    list_filter = ('title', 'is_for_vegan', 'is_for_vegetarian', )
     search_fields = ('title',)
+    filter_horizontal = ('suggested_wine', )
     save_on_top = True
     model = Recipe
     inlines = [IngredientInline, RecipeStepInline, ]
@@ -64,7 +64,6 @@ class RecipeAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(FoodType)
 admin.site.register(Food, FoodAdmin)
-#admin.site.register(Photo)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Wine, WineAdmin)
 admin.site.register(GrapeType, GrapeTypeAdmin)

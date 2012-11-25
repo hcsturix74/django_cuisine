@@ -37,12 +37,7 @@ You can, of course, delete the DB (djcuisinedb) and perform a syncdb:
 python manage.py syncdb
 
 Some fixtures will be inserted soon.
-Stay tuned!
-
-
-
-
-
+See below and stay tuned!
 
 
 Application Structure
@@ -50,3 +45,12 @@ Application Structure
 
 Wait for a while....Work in progress still!
 
+
+
+TODO
+-----------------------------------------
+- Application Structure ;-)
+- Simple front-end and default view(s)
+- comments support
+- fixtures (with some recipes & wines) -   :-P
+- django_tagging

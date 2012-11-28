@@ -122,13 +122,28 @@ class GrapeType(GenericBaseModel):
     """
 
     name = models.CharField(max_length=200, verbose_name=_('Grape Name'))
-    region = models.CharField(max_length=200, verbose_name=_('Region'))
+    origin = models.CharField(max_length=200, verbose_name=_('Origin'))
 
     def __unicode__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
+
+
+
+class Region(GenericBaseModel):
+    """
+    Region class - inherits from GenericBaseModel
+    """
+    region_name = models.CharField(verbose_name=_('Name'), max_length=30)
+    country =  models.ForeignKey(Country, verbose_name=_('Country'))
+
+    def __unicode__(self):
+        return self.region_name
+
+    class Meta:
+        ordering = ['region_name']
 
 
 class Wine(GenericBaseModel):
@@ -138,6 +153,9 @@ class Wine(GenericBaseModel):
 
     name = models.CharField(max_length=200, verbose_name=_('Wine Name'))
     description = models.TextField(verbose_name=_('Wine Description'), null=True, blank=True)
+    place = models.CharField(max_length=200, verbose_name=_('Place'), null=True, blank=True)
+    region = models.ForeignKey(Region, verbose_name=_('Region'))
+    serv_temperature = models.IntegerField(verbose_name=_('Temperature(\xb0C)'), null=True, blank=True)
     alcohol_percentage = models.FloatField(verbose_name=_('Alcohol(%)'))
     year = models.IntegerField(verbose_name=_('Year'))
     grape_type = models.ManyToManyField(GrapeType, verbose_name=_('Grape Type'), related_name='wines', null=True,
@@ -165,7 +183,8 @@ class Recipe(GenericBaseModel):
     category = models.ForeignKey(Category, verbose_name=_('Category'))
     is_for_vegan = models.BooleanField(verbose_name=_('Vegan Friendly'), default=False)
     is_for_vegetarian = models.BooleanField(verbose_name=_('Vegetarian Friendly'), default=False)
-    origin = models.ForeignKey(Country, verbose_name=_('Country'))
+    origin = models.ForeignKey(Region, verbose_name=_('Region'), null=True, blank=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'))
     image = models.ImageField(verbose_name=_('Image'), upload_to='images', null=True, blank=True)
     suggested_wine = models.ManyToManyField(Wine, verbose_name=_('Suggested Wine'), related_name='recipes', null=True,
                                             blank=True)

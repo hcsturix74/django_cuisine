@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'django_cuisine.views.home', name='home'),
+     url(r'^$', 'cookbook.views.homepage', name='homepage'),
     #url(r'^django_cuisine/', include('django_cuisine.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
@@ -15,3 +15,12 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )
+
+
+#Static content
+from django.conf import settings
+
+if settings.DEBUG:
+    urlpatterns += patterns('django.contrib.staticfiles.views',
+        url(r'^static/(?P<path>.*)$', 'serve'),
+    )

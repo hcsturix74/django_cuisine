@@ -131,13 +131,12 @@ class GrapeType(GenericBaseModel):
         ordering = ['name']
 
 
-
 class Region(GenericBaseModel):
     """
     Region class - inherits from GenericBaseModel
     """
     region_name = models.CharField(verbose_name=_('Name'), max_length=30)
-    country =  models.ForeignKey(Country, verbose_name=_('Country'))
+    country = models.ForeignKey(Country, verbose_name=_('Country'))
 
     def __unicode__(self):
         return self.region_name
@@ -154,6 +153,7 @@ class Wine(GenericBaseModel):
     name = models.CharField(max_length=200, verbose_name=_('Wine Name'))
     description = models.TextField(verbose_name=_('Wine Description'), null=True, blank=True)
     place = models.CharField(max_length=200, verbose_name=_('Place'), null=True, blank=True)
+    cooperative = models.CharField(max_length=200, verbose_name=_('Cooperative'), null=True, blank=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'))
     serv_temperature = models.IntegerField(verbose_name=_('Temperature(\xb0C)'), null=True, blank=True)
     alcohol_percentage = models.FloatField(verbose_name=_('Alcohol(%)'))

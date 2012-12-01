@@ -1,3 +1,5 @@
+# coding=utf-8
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin.models import LogEntry
@@ -28,9 +30,10 @@ CONTINENT_LIST = ((1, _('Europe')),
 
 WINE_KIND_LIST = ((1, _('Red')),
                  (2, _('White')),
-                 (3, _('Sparkling')),
-                 (4, _('Fortified')),)
-
+                 (3, _('Rosè')),
+                 (4, _('Sparkling')),
+                 (5, _('Passito')),
+                 (5, _('Liqueur-like')),)
 
 class GenericBaseModel(models.Model):
     """
@@ -156,6 +159,7 @@ class Wine(GenericBaseModel):
     cooperative = models.CharField(max_length=200, verbose_name=_('Cooperative'), null=True, blank=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'))
     serv_temperature = models.IntegerField(verbose_name=_('Temperature(\xb0C)'), null=True, blank=True)
+    estate_bottled = models.BooleanField(verbose_name=_('Estate Bottled'), default=False)
     alcohol_percentage = models.FloatField(verbose_name=_('Alcohol(%)'))
     year = models.IntegerField(verbose_name=_('Year'))
     grape_type = models.ManyToManyField(GrapeType, verbose_name=_('Grape Type'), related_name='wines', null=True,
@@ -188,6 +192,8 @@ class Recipe(GenericBaseModel):
     image = models.ImageField(verbose_name=_('Image'), upload_to='images', null=True, blank=True)
     suggested_wine = models.ManyToManyField(Wine, verbose_name=_('Suggested Wine'), related_name='recipes', null=True,
                                             blank=True)
+    author = models.ForeignKey(User, verbose_name=_('Author'))
+    fork_origin = models.ForeignKey('self', verbose_name=_('Fork Origin'), blank=True, null=True)
     #Use django-tagging application here
     #tags = TagField()
     objects = models.Manager()
@@ -209,6 +215,7 @@ class RecipeStep(GenericBaseModel):
     text = models.TextField(verbose_name=_('Text'), blank=True, null=True)
     recipe = models.ForeignKey(Recipe, verbose_name=_('Recipe'))
     order = models.IntegerField(verbose_name=_('Order'), blank=True, null=True)
+    duration = models.IntegerField(verbose_name=_('Duration (min.)'), blank=True, null=True)
     image = models.ImageField(verbose_name=_('Image'), upload_to='images', null=True, blank=True)
 
     def __unicode__(self):

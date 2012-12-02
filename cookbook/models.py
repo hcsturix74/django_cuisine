@@ -9,31 +9,31 @@ import datetime
 from managers import VegManager, PublishedManager
 
 #Some choices here
-DIFFICULTY_CHOICES = ((1, _('Very Easy')),
-                      (2, _('Easy')),
-                      (3, _('Medium')),
-                      (4, _('Difficult')),
-                      (5, _('Very Difficult')),)
+DIFFICULTY_CHOICES = ((1, _(u'Very Easy')),
+                      (2, _(u'Easy')),
+                      (3, _(u'Medium')),
+                      (4, _(u'Difficult')),
+                      (5, _(u'Very Difficult')),)
 
 #unit type, for Weight, Volume or other....
-UNIT_TYPE = ((1, _('Weight')),
-             (2, _('Volume')),
-             (3, _('Other')),)
+UNIT_TYPE = ((1, _(u'Weight')),
+             (2, _(u'Volume')),
+             (3, _(u'Other')),)
 
 #Continent list, used for Country
-CONTINENT_LIST = ((1, _('Europe')),
-                  (2, _('Asia')),
-                  (3, _('Africa')),
-                  (4, _('America')),
-                  (5, _('Oceania')),)
+CONTINENT_LIST = ((1, _(u'Europe')),
+                  (2, _(u'Asia')),
+                  (3, _(u'Africa')),
+                  (4, _(u'America')),
+                  (5, _(u'Oceania')),)
 
 
-WINE_KIND_LIST = ((1, _('Red')),
-                 (2, _('White')),
-                 (3, _('Rosè')),
-                 (4, _('Sparkling')),
-                 (5, _('Passito')),
-                 (6, _('Liqueur-like')),)
+WINE_KIND_LIST = ((1, _(u'Red')),
+                 (2, _(u'White')),
+                 (3, _(u'Rosè')),
+                 (4, _(u'Sparkling')),
+                 (5, _(u'Passito')),
+                 (6, _(u'Liqueur-like')),)
 
 class GenericBaseModel(models.Model):
     """
@@ -43,9 +43,9 @@ class GenericBaseModel(models.Model):
     It provides some basic attributes (i.e. table columns) common to Content base
     applications
     """
-    is_published = models.BooleanField(blank=True, default=True, verbose_name=_('Published'))
-    created = models.DateTimeField(verbose_name=_('Creation Date'), default=datetime.datetime.now(), editable=False)
-    updated = models.DateTimeField(verbose_name=_('Modify Date'), default=datetime.datetime.now(), editable=False)
+    is_published = models.BooleanField(blank=True, default=True, verbose_name=_(u'Published'))
+    created = models.DateTimeField(verbose_name=_(u'Creation Date'), default=datetime.datetime.now(), editable=False)
+    updated = models.DateTimeField(verbose_name=_(u'Modify Date'), default=datetime.datetime.now(), editable=False)
     objects = models.Manager()
     pub_objects = PublishedManager()
 
@@ -93,30 +93,30 @@ class Category(GenericBaseModel):
     """
     Category class - inherits from GenericBaseModel
     """
-    name = models.CharField(verbose_name=_('Category'), max_length=60, blank=True, null=True)
-    parent = models.ForeignKey('self', verbose_name=_('Parent'))
-    order = models.IntegerField(verbose_name=_('Order'), blank=True, null=True)
+    name = models.CharField(verbose_name=_(u'Category'), max_length=60, blank=True, null=True)
+    parent = models.ForeignKey('self', verbose_name=_(u'Parent'))
+    order = models.IntegerField(verbose_name=_(u'Order'), blank=True, null=True)
 
     class Meta:
         ordering = ['name']
-        verbose_name = _('Category')
-        verbose_name_plural = _('Categories')
+        verbose_name = _(u'Category')
+        verbose_name_plural = _(u'Categories')
 
 
 class Country(GenericBaseModel):
     """
     Country class - inherits from GenericBaseModel
     """
-    name = models.CharField(verbose_name=_('Country'), max_length=60, blank=True, null=True)
-    continent = models.IntegerField(verbose_name=_('Continent'), choices=CONTINENT_LIST)
+    name = models.CharField(verbose_name=_(u'Country'), max_length=60, blank=True, null=True)
+    continent = models.IntegerField(verbose_name=_(u'Continent'), choices=CONTINENT_LIST)
 
     def __unicode__(self):
         return self.name
 
     class Meta:
         ordering = ['name']
-        verbose_name = _('Country')
-        verbose_name_plural = _('Countries')
+        verbose_name = _(u"Country")
+        verbose_name_plural = _(u'Countries')
 
 
 class GrapeType(GenericBaseModel):
@@ -124,8 +124,8 @@ class GrapeType(GenericBaseModel):
     GrapeType class - inherits from GenericBaseModel
     """
 
-    name = models.CharField(max_length=200, verbose_name=_('Grape Name'))
-    origin = models.CharField(max_length=200, verbose_name=_('Origin'))
+    name = models.CharField(max_length=200, verbose_name=_(u'Grape Name'))
+    origin = models.CharField(max_length=200, verbose_name=_(u'Origin'))
 
     def __unicode__(self):
         return self.name
@@ -138,8 +138,8 @@ class Region(GenericBaseModel):
     """
     Region class - inherits from GenericBaseModel
     """
-    region_name = models.CharField(verbose_name=_('Name'), max_length=30)
-    country = models.ForeignKey(Country, verbose_name=_('Country'))
+    region_name = models.CharField(verbose_name=_(u'Name'), max_length=30)
+    country = models.ForeignKey(Country, verbose_name=_(u'Country'))
 
     def __unicode__(self):
         return self.region_name
@@ -153,20 +153,20 @@ class Wine(GenericBaseModel):
     Wine class - inherits from GenericBaseModel
     """
 
-    name = models.CharField(max_length=200, verbose_name=_('Wine Name'))
-    description = models.TextField(verbose_name=_('Wine Description'), null=True, blank=True)
-    place = models.CharField(max_length=200, verbose_name=_('Place'), null=True, blank=True)
-    cooperative = models.CharField(max_length=200, verbose_name=_('Cooperative'), null=True, blank=True)
-    region = models.ForeignKey(Region, verbose_name=_('Region'))
-    serv_temperature = models.IntegerField(verbose_name=_('Temperature(C)'), null=True, blank=True)
-    estate_bottled = models.BooleanField(verbose_name=_('Estate Bottled'), default=False)
-    alcohol_percentage = models.FloatField(verbose_name=_('Alcohol(%)'))
-    year = models.IntegerField(verbose_name=_('Year'))
-    grape_type = models.ManyToManyField(GrapeType, verbose_name=_('Grape Type'), related_name='wines', null=True,
+    name = models.CharField(max_length=200, verbose_name=_(u'Wine Name'))
+    description = models.TextField(verbose_name=_(u'Wine Description'), null=True, blank=True)
+    place = models.CharField(max_length=200, verbose_name=_(u'Place'), null=True, blank=True)
+    cooperative = models.CharField(max_length=200, verbose_name=_(u'Cooperative'), null=True, blank=True)
+    region = models.ForeignKey(Region, verbose_name=_(u'Region'))
+    serv_temperature = models.IntegerField(verbose_name=_(u'Temperature(°C)'), null=True, blank=True)
+    estate_bottled = models.BooleanField(verbose_name=_(u'Estate Bottled'), default=False)
+    alcohol_percentage = models.FloatField(verbose_name=_(u'Alcohol(%)'))
+    year = models.IntegerField(verbose_name=_(u'Year'))
+    grape_type = models.ManyToManyField(GrapeType, verbose_name=_(u'Grape Type'), related_name='wines', null=True,
                                         blank=True)
-    rating = models.PositiveIntegerField(verbose_name=_('Rating'), default=1,
-                                         help_text=_('This field is used wine prices (min=1, max=5)'))
-    kind = models.IntegerField(verbose_name=_('Kind'), choices=WINE_KIND_LIST)
+    rating = models.PositiveIntegerField(verbose_name=_(u'Rating'), default=1,
+                                         help_text=_(u'This field is used wine prices (min=1, max=5)'))
+    kind = models.IntegerField(verbose_name=_(u'Kind'), choices=WINE_KIND_LIST)
 
     def __unicode__(self):
         return self.name
@@ -180,20 +180,20 @@ class Recipe(GenericBaseModel):
     Recipe class - inherits from GenericBaseModel
     """
 
-    title = models.CharField(max_length=200, verbose_name=_('Title'))
-    summary = models.CharField(max_length=500, verbose_name=_('Summary'), blank=True, null=True)
-    preparation_time = models.CharField(max_length=100, verbose_name=_('Title'), blank=True, null=True)
-    difficulty = models.IntegerField(verbose_name=_('Difficulty'), choices=DIFFICULTY_CHOICES)
-    category = models.ForeignKey(Category, verbose_name=_('Category'))
-    is_for_vegan = models.BooleanField(verbose_name=_('Vegan Friendly'), default=False)
-    is_for_vegetarian = models.BooleanField(verbose_name=_('Vegetarian Friendly'), default=False)
-    origin = models.ForeignKey(Region, verbose_name=_('Region'), null=True, blank=True)
-    country = models.ForeignKey(Country, verbose_name=_('Country'))
-    image = models.ImageField(verbose_name=_('Image'), upload_to='images', null=True, blank=True)
-    suggested_wine = models.ManyToManyField(Wine, verbose_name=_('Suggested Wine'), related_name='recipes', null=True,
+    title = models.CharField(max_length=200, verbose_name=_(u'Title'))
+    summary = models.CharField(max_length=500, verbose_name=_(u'Summary'), blank=True, null=True)
+    preparation_time = models.CharField(max_length=100, verbose_name=_(u'Title'), blank=True, null=True)
+    difficulty = models.IntegerField(verbose_name=_(u'Difficulty'), choices=DIFFICULTY_CHOICES)
+    category = models.ForeignKey(Category, verbose_name=_(u'Category'))
+    is_for_vegan = models.BooleanField(verbose_name=_(u'Vegan Friendly'), default=False)
+    is_for_vegetarian = models.BooleanField(verbose_name=_(u'Vegetarian Friendly'), default=False)
+    origin = models.ForeignKey(Region, verbose_name=_(u'Region'), null=True, blank=True)
+    country = models.ForeignKey(Country, verbose_name=_(u'Country'))
+    image = models.ImageField(verbose_name=_(u'Image'), upload_to='images', null=True, blank=True)
+    suggested_wine = models.ManyToManyField(Wine, verbose_name=_(u'Suggested Wine'), related_name='recipes', null=True,
                                             blank=True)
-    author = models.ForeignKey(User, verbose_name=_('Author'))
-    fork_origin = models.ForeignKey('self', verbose_name=_('Fork Origin'), blank=True, null=True)
+    author = models.ForeignKey(User, verbose_name=_(u'Author'))
+    fork_origin = models.ForeignKey('self', verbose_name=_(u'Fork Origin'), blank=True, null=True)
     #Use django-tagging application here
     #tags = TagField()
     objects = models.Manager()
@@ -212,11 +212,11 @@ class RecipeStep(GenericBaseModel):
     RecipeStep class - inherits from GenericBaseModel
     This class represents the step for a recipe preparation
     """
-    text = models.TextField(verbose_name=_('Text'), blank=True, null=True)
-    recipe = models.ForeignKey(Recipe, verbose_name=_('Recipe'))
-    order = models.IntegerField(verbose_name=_('Order'), blank=True, null=True)
-    duration = models.IntegerField(verbose_name=_('Duration (min.)'), blank=True, null=True)
-    image = models.ImageField(verbose_name=_('Image'), upload_to='images', null=True, blank=True)
+    text = models.TextField(verbose_name=_(u'Text'), blank=True, null=True)
+    recipe = models.ForeignKey(Recipe, verbose_name=_(u'Recipe'))
+    order = models.IntegerField(verbose_name=_(u'Order'), blank=True, null=True)
+    duration = models.IntegerField(verbose_name=_(u'Duration (min.)'), blank=True, null=True)
+    image = models.ImageField(verbose_name=_(u'Image'), upload_to='images', null=True, blank=True)
 
     def __unicode__(self):
         ret = self.text[:40]
@@ -232,9 +232,9 @@ class Unit(models.Model):
     """
     Unit class - inherits from models.Model
     """
-    unit_name = models.CharField(max_length=60, verbose_name=_('Unit Name'))
-    code = models.CharField(verbose_name=_('Abbreviation Code'), max_length=60, blank=True, null=True)
-    type = models.IntegerField(verbose_name=_('Unit Type'), choices=UNIT_TYPE)
+    unit_name = models.CharField(max_length=60, verbose_name=_(u'Unit Name'))
+    code = models.CharField(verbose_name=_(u'Abbreviation Code'), max_length=60, blank=True, null=True)
+    type = models.IntegerField(verbose_name=_(u'Unit Type'), choices=UNIT_TYPE)
 
     def __unicode__(self):
         return self.unit_name
@@ -247,7 +247,7 @@ class FoodType(GenericBaseModel):
     """
     FoodType class - inherits from GenericBaseModel
     """
-    type_name = models.CharField(max_length=60, verbose_name=_('Ingredient Name'))
+    type_name = models.CharField(max_length=60, verbose_name=_(u'Ingredient Name'))
 
     def __unicode__(self):
         return self.type_name
@@ -260,8 +260,8 @@ class Food(GenericBaseModel):
     """
     Food class - inherits from GenericBaseModel
     """
-    name = models.CharField(max_length=60, verbose_name=_('Ingredient Name'))
-    food_type = models.ForeignKey(FoodType, verbose_name=_('Food type'), related_name='foods')
+    name = models.CharField(max_length=60, verbose_name=_(u'Ingredient Name'))
+    food_type = models.ForeignKey(FoodType, verbose_name=_(u'Food Type'), related_name='foods')
 
     def __unicode__(self):
         return self.name
@@ -274,11 +274,11 @@ class Ingredient(GenericBaseModel):
     """
     Ingredient class - inherits from GenericBaseModel
     """
-    quantity = models.FloatField(verbose_name=_('Quantity'))
-    unit = models.ForeignKey(Unit, verbose_name=_('Unit'), null=True, blank=True)
-    recipe = models.ForeignKey(Recipe, verbose_name=_('Recipe'))
-    food = models.ForeignKey(Food, verbose_name=_('Food'))
-    order = models.PositiveIntegerField(verbose_name=_('Order'), blank=True, null=True)
+    quantity = models.FloatField(verbose_name=_(u'Quantity'))
+    unit = models.ForeignKey(Unit, verbose_name=_(u'Unit'), null=True, blank=True)
+    recipe = models.ForeignKey(Recipe, verbose_name=_(u'Recipe'))
+    food = models.ForeignKey(Food, verbose_name=_(u'Food'))
+    order = models.PositiveIntegerField(verbose_name=_(u'Order'), blank=True, null=True)
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)

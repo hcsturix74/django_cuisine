@@ -33,7 +33,7 @@ WINE_KIND_LIST = ((1, _('Red')),
                  (3, _('Rosè')),
                  (4, _('Sparkling')),
                  (5, _('Passito')),
-                 (5, _('Liqueur-like')),)
+                 (6, _('Liqueur-like')),)
 
 class GenericBaseModel(models.Model):
     """
@@ -158,7 +158,7 @@ class Wine(GenericBaseModel):
     place = models.CharField(max_length=200, verbose_name=_('Place'), null=True, blank=True)
     cooperative = models.CharField(max_length=200, verbose_name=_('Cooperative'), null=True, blank=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'))
-    serv_temperature = models.IntegerField(verbose_name=_('Temperature(\xb0C)'), null=True, blank=True)
+    serv_temperature = models.IntegerField(verbose_name=_('Temperature(C)'), null=True, blank=True)
     estate_bottled = models.BooleanField(verbose_name=_('Estate Bottled'), default=False)
     alcohol_percentage = models.FloatField(verbose_name=_('Alcohol(%)'))
     year = models.IntegerField(verbose_name=_('Year'))

@@ -55,7 +55,7 @@ class CountryAdmin(admin.ModelAdmin):
 
 
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'year', 'alcohol_percentage',)
+    list_display = ('name', 'continent', )
 
 
 class RecipeAdmin(admin.ModelAdmin):

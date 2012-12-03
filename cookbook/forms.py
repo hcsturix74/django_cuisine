@@ -1,6 +1,6 @@
 __author__ = 'luca'
 from django.forms import ModelForm
-from models import Recipe
+from models import Recipe , Wine
 
 class FrontendRecipeEditForm(ModelForm):
 
@@ -18,5 +18,15 @@ class FrontendRecipeEditForm(ModelForm):
     class Meta:
         model = Recipe
         exclude = ('fork_origin', 'is_published',)
+
+
+class RecipeForm(ModelForm):
+    class Meta:
+        model = Recipe
+
+class WineForm(ModelForm):
+    class Meta:
+        model = Wine
+
 
 

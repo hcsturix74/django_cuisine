@@ -6,6 +6,8 @@ from django.views.generic import (ListView,
                                  DeleteView
                                  )
 
+from cookbook.forms import RecipeForm, WineForm
+
 def cookbook_patterns(*forms, **kwargs):
     patterns_ = patterns('')
     for form in forms:

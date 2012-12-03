@@ -23,6 +23,14 @@ UNIT_TYPE = ((1, _(u'Weight')),
              (2, _(u'Volume')),
              (3, _(u'Other')),)
 
+#Continent list, used for Country
+CONTINENT_LIST = ((1, _(u'Europe')),
+                  (2, _(u'Asia')),
+                  (3, _(u'Africa')),
+                  (4, _(u'America')),
+                  (5, _(u'Oceania')),)
+
+
 WINE_KIND_LIST = ((1, _(u'Red')),
                  (2, _(u'White')),
                  (3, _(u'Rosè')),
@@ -114,6 +122,22 @@ class Category(GenericBaseModel):
         verbose_name_plural = _(u'Categories')
 
 
+class Country(GenericBaseModel):
+    """
+    Country class - inherits from GenericBaseModel
+    """
+    name = models.CharField(verbose_name=_(u'Country'), max_length=60, blank=True, null=True)
+    continent = models.IntegerField(verbose_name=_(u'Continent'), choices=CONTINENT_LIST)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _(u"Country")
+        verbose_name_plural = _(u'Countries')
+
+
 class GrapeType(GenericBaseModel):
     """
     GrapeType class - inherits from GenericBaseModel
@@ -127,6 +151,20 @@ class GrapeType(GenericBaseModel):
 
     class Meta:
         ordering = ['name']
+
+
+class Region(GenericBaseModel):
+    """
+    Region class - inherits from GenericBaseModel
+    """
+    region_name = models.CharField(verbose_name=_(u'Name'), max_length=30)
+    country = models.ForeignKey(Country, verbose_name=_(u'Country'))
+
+    def __unicode__(self):
+        return self.region_name
+
+    class Meta:
+        ordering = ['region_name']
 
 
 class Wine(GenericBaseModel):
@@ -183,7 +221,7 @@ class Recipe(GenericBaseModel):
     author = models.ForeignKey(User, verbose_name=_(u'Author'))
     fork_origin = models.ForeignKey('self', verbose_name=_(u'Fork Origin'), blank=True, null=True)
     #Use django-tagging application here
-    tags = TagField()
+    #tags = TagField()
     objects = models.Manager()
     pub_objects = PublishedManager()
     veg_objects = VegManager()

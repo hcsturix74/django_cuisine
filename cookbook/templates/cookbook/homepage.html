@@ -1,0 +1,420 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Cookhub - the first global Social Cooking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+    </style>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/iconbig.css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+</head>
+
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">CookHub.org</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Recipes</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Wines <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav pull-right">
+                    {% if user.is_authenticated %}
+                        <li class="active"><a href="#">{% trans "Hi" %} {{ user.username|capfirst }}</a></li>
+                        <li class="active"><a href="#">{% trans "LogOut" %}</a></li>
+                    {% else %}
+                        <li><a href="/login/">Login & SignUp</a></li>
+                    {% endif %}
+                </ul>
+                {% comment %}<form class="navbar-form pull-right">
+                    <input class="span2" type="text" placeholder="Email">
+                    <input class="span2" type="password" placeholder="Password">
+                    <button type="submit" class="btn">Sign in</button>
+                </form>{% endcomment %}
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Main hero unit for a primary marketing message or call to action -->
+    <div class="hero-unit img-rounded">
+        <h2>Hello, what you would like to eat today!</h2>
+        <p>This is a huge collection of italians wines for your dinner , lunch , rest . It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+        <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    </div>
+
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="span4">
+            <h2>{% trans "Search Recipes" %}</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+            <h2>{% trans "Collaborate & Fork" %}</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+            <h2>{% trans "Test and Comment" %}</h2>
+            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+    </div>
+    {% block container %}
+
+    <div class="row">
+        {% block maintitle %}
+         <div class="span8">
+            <h2>{% trans "Last recipes added" %} <span class="label label-info">32 {% trans "today" %}</span> </h2>
+         </div>
+         <div class="span4">
+             <div class="btn-toolbar pull-right">
+                 <div class="btn-group">
+                     <a class="btn" href="#"><i class="icon-th-large"></i></a>
+                     <a class="btn" href="#"><i class="icon-th"></i></a>
+                     <a class="btn" href="#"><i class="icon-th-list"></i></a>
+                     <a class="btn" href="#"><i class="icon-eye-open"></i></a>
+                 </div>
+             </div>
+         </div>
+        {% endblock maintitle %}
+{#    <div class="span3">#}
+{#        <div class="nav-headers">#}
+{#            <h3>Find Your Favorite Recipe, Wine, and Other With Cusine.</h3>#}
+{#            <p><a href="#" class="btn">Learn more →</a></p>#}
+{#        </div>#}
+{#        <ul class="nav nav-tabs nav-stacked">#}
+{#            <li class="active"><a href="#"><i class="icon-picture"></i> Newest</a></li>#}
+{#            <li><a href="#"><i class="icon-ok"></i> Popular</a></li>#}
+{#            <li><a href="#"><i class="icon-certificate"></i> Top Sites</a></li>#}
+{#            <li><a href="#"><i class="icon-bookmark"></i> Most Viewed</a></li>#}
+{#            <li><a href="#"><i class="icon-th-list"></i> Categories</a></li>#}
+{#            <li><a href="#"><i class="icon-download"></i> Most Download</a></li>#}
+{#            <li><a href="#"><i class="icon-heart"></i> Recomended</a></li>#}
+{#        </ul>#}
+{#    </div>#}
+        <div class="span12"></div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="group" rel="group1" href="img/4_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Building</a>, <a href="#">Tower</a>,
+                    <a href="#">Eifel</a>, <a href="#">Wonders of the world</a>, <a href="#">Miracle</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="group" rel="group1" href="img/3_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Sun</a>, <a href="#">Sunrise</a>,
+                    <a href="#">Dawn</a>, <a href="#">Morning</a>, <a href="#">Landscape</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="group" rel="group1" href="img/1_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Tree</a>, <a href="#">Landscape</a>,
+                    <a href="#">Forest</a>, <a href="#">Nature</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="images1" href="img/5_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Building</a>, <a href="#">Home</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="images2" href="img/2_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Sea</a></p>
+            </div>
+        </div>
+
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="images3" href="img/4_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Building</a>, <a href="#">Tower</a>,
+                    <a href="#">Eifel</a>, <a href="#">Wonders of the world</a>, <a href="#">Miracle</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="images4" href="img/3_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Sun</a>, <a href="#">Sunrise</a>,
+                    <a href="#">Dawn</a>, <a href="#">Morning</a>, <a href="#">Landscape</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="group" rel="wheel_group" href="img/1_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Tree</a>, <a href="#">Landscape</a>,
+                    <a href="#">Forest</a>, <a href="#">Nature</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a rel="wheel_group" href="img/5_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Building</a>, <a href="#">Home</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a rel="wheel_group" href="img/2_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Sea</a></p>
+            </div>
+        </div>
+        <div class="span3 galery">
+            <div class="menu-galery">
+                <ul>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Detail"><i class="iconbig-search"></i></a></li>
+                    <li><a href="detail.html" rel="tooltip" data-original-title="Add Comment"><i class="iconbig-speak"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Download"><i class="iconbig-download"></i></a></li>
+                    <li><a href="#" rel="tooltip" data-original-title="Like"><i class="iconbig-black-star"></i></a></li>
+                </ul>
+            </div>
+            <div class="image-galery"><a class="images3" href="img/4_b.jpg"><img src="http://fakeimg.pl/350x280/?text=recipe"></a></div>
+            <div class="count-galery">
+                <ul>
+                    <li><i class="icon-comment"></i> 5</li>
+                    <li><i class="icon-download-alt"></i> 7</li>
+                    <li><i class="icon-star"></i> 2</li>
+                    <li><i class="icon-eye-open"></i> 20</li>
+                </ul>
+            </div>
+            <div class="tags-galery">
+                <p><i class="icon-tags"></i> Tags : <a href="#">Building</a>, <a href="#">Tower</a>,
+                    <a href="#">Eifel</a>, <a href="#">Wonders of the world</a>, <a href="#">Miracle</a></p>
+            </div>
+        </div>
+
+    </div>
+    {% endblock container %}
+    <hr>
+
+    <footer>
+        <p>&copy; Eat&Drink Company 2012</p>
+    </footer>
+
+</div> <!-- /container -->
+
+<!--  javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+<script src="/media/js/jquery.backstretch.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".hero-unit").backstretch([
+              "http://dl.dropbox.com/u/515046/www/garfield-interior.jpg"
+            , "http://dl.dropbox.com/u/515046/www/cheers.jpg"
+        ], {duration: 6000, fade: 1000});
+    });
+</script>
+</body>
+</html>

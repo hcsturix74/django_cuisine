@@ -11,11 +11,21 @@ As I'm fond of cooking, I coded this application to store my favourites recipes
 This project is based on django-recipes application which can be found at:
 http://code.google.com/p/django-recipes/
 
+THIS IS A WORK-IN-PROGRESS PROJECT, SO THIS SI NOT A STABLE VERSION.
 
 Dependecies
 -----------
-Now it is a stand-alone application.
-The only dependency I will introduce is django_tagging
+Take a look at requirements.txt:
+* Django==1.4.2
+* Pillow==1.7.8
+* django-geo==0.3b1
+* django-mptt==0.5.2
+* django-social-auth==0.7.10
+* django-tagging>=0.3
+* httplib2==0.7.7
+* oauth2==1.5.211
+* python-openid==2.2.5
+* wsgiref==0.1.2
 
 
 

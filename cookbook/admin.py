@@ -2,6 +2,7 @@ __author__ = 'Luca'
 
 from django.contrib import admin
 from models import *
+import cookbook_settings
 
 
 class CategoryInline(admin.TabularInline):
@@ -22,7 +23,8 @@ class FoodAdmin(admin.ModelAdmin):
 
 class RecipeStepInline(admin.TabularInline):
     model = RecipeStep
-    extra = 3
+    extra = cookbook_settings.DJANGO_CUISINE_RECIPE_STEPS_EXTRA
+    max_num = cookbook_settings.DJANGO_CUISINE_RECIPE_STEPS_MAX_NUM
 
 
 class UnitAdmin(admin.ModelAdmin):
@@ -42,30 +44,24 @@ class WineAdmin(admin.ModelAdmin):
 
 class IngredientInline(admin.TabularInline):
     model = Ingredient
-    extra = 3
-
-class RegionAdmin(admin.ModelAdmin):
-    list_display = ('region_name', 'country',)
-    list_editable = ('country', )
-    list_filter = ('country', )
-
-class CountryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'continent',)
-    list_filter = ('continent', )
-
+    extra = cookbook_settings.DJANGO_CUISINE_INGREDIENT_EXTRA
+    max_num = cookbook_settings.DJANGO_CUISINE_INGREDIENT_MAX_NUM
 
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('name', 'continent', )
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'summary', 'preparation_time', 'is_for_vegan', 'is_for_vegetarian',)
+    list_display = ('title', 'summary', 'preparation_time', 'is_for_vegan', 'is_for_vegetarian',
+                    'country')
     list_filter = ('title', 'is_for_vegan', 'is_for_vegetarian', )
     search_fields = ('title',)
     filter_horizontal = ('suggested_wine', )
     save_on_top = True
+    save_as = True
     model = Recipe
     inlines = [IngredientInline, RecipeStepInline, ]
+
 
     def save_model(self, request, obj, form, change):
         """
@@ -84,6 +80,4 @@ admin.site.register(Food, FoodAdmin)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Wine, WineAdmin)
 admin.site.register(GrapeType, GrapeTypeAdmin)
-admin.site.register(Region, RegionAdmin)
-admin.site.register(Country, CountryAdmin)
 admin.site.register(Unit, UnitAdmin)

@@ -5,7 +5,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 import datetime
+from filer.fields import image
 
+from geo.models import AdministrativeArea, Country, Location
+from tagging.fields import TagField
 from managers import VegManager, PublishedManager
 
 #Some choices here
@@ -20,20 +23,28 @@ UNIT_TYPE = ((1, _(u'Weight')),
              (2, _(u'Volume')),
              (3, _(u'Other')),)
 
-#Continent list, used for Country
-CONTINENT_LIST = ((1, _(u'Europe')),
-                  (2, _(u'Asia')),
-                  (3, _(u'Africa')),
-                  (4, _(u'America')),
-                  (5, _(u'Oceania')),)
-
-
 WINE_KIND_LIST = ((1, _(u'Red')),
                  (2, _(u'White')),
                  (3, _(u'Rosè')),
                  (4, _(u'Sparkling')),
                  (5, _(u'Passito')),
                  (6, _(u'Liqueur-like')),)
+
+DOP = 1
+IGP = 2
+EU_OTHER = 3
+WINE_EUROPEAN_TYPES = ((DOP, _(u'DOP')),
+                      (IGP, _(u'IGP')),
+                      (EU_OTHER, _(u'Other')),)
+
+DOCG = 1
+DOC = 2
+IGT = 3
+TR_OTHER = 4
+WINE_TRADITIONAL_TYPES = ((DOCG, _(u'DOCG')),
+                         (DOC, _(u'DOC')),
+                         (IGT, _(u'IGT')),
+                         (TR_OTHER, _(u'Other')),)
 
 class GenericBaseModel(models.Model):
     """
@@ -103,22 +114,6 @@ class Category(GenericBaseModel):
         verbose_name_plural = _(u'Categories')
 
 
-class Country(GenericBaseModel):
-    """
-    Country class - inherits from GenericBaseModel
-    """
-    name = models.CharField(verbose_name=_(u'Country'), max_length=60, blank=True, null=True)
-    continent = models.IntegerField(verbose_name=_(u'Continent'), choices=CONTINENT_LIST)
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-        verbose_name = _(u"Country")
-        verbose_name_plural = _(u'Countries')
-
-
 class GrapeType(GenericBaseModel):
     """
     GrapeType class - inherits from GenericBaseModel
@@ -134,20 +129,6 @@ class GrapeType(GenericBaseModel):
         ordering = ['name']
 
 
-class Region(GenericBaseModel):
-    """
-    Region class - inherits from GenericBaseModel
-    """
-    region_name = models.CharField(verbose_name=_(u'Name'), max_length=30)
-    country = models.ForeignKey(Country, verbose_name=_(u'Country'))
-
-    def __unicode__(self):
-        return self.region_name
-
-    class Meta:
-        ordering = ['region_name']
-
-
 class Wine(GenericBaseModel):
     """
     Wine class - inherits from GenericBaseModel
@@ -155,10 +136,15 @@ class Wine(GenericBaseModel):
 
     name = models.CharField(max_length=200, verbose_name=_(u'Wine Name'))
     description = models.TextField(verbose_name=_(u'Wine Description'), null=True, blank=True)
-    place = models.CharField(max_length=200, verbose_name=_(u'Place'), null=True, blank=True)
+    image = image.FilerImageField(verbose_name=_(u'Image'), null=True, blank=True)
+    code = models.CharField(max_length=20, verbose_name=_(u'Code'))
+    traditional_code = models.IntegerField(verbose_name=_(u'Traditional Code'), choices=WINE_TRADITIONAL_TYPES,
+                                           default=1)
+    european_code = models.IntegerField(verbose_name=_(u'EU Code'), choices=WINE_EUROPEAN_TYPES, default=1)
+    place = models.ForeignKey(Location,verbose_name=_(u'Location'), null=True, blank=True)
     cooperative = models.CharField(max_length=200, verbose_name=_(u'Cooperative'), null=True, blank=True)
-    region = models.ForeignKey(Region, verbose_name=_(u'Region'))
-    serv_temperature = models.IntegerField(verbose_name=_(u'Temperature(°C)'), null=True, blank=True)
+    area = models.ForeignKey(AdministrativeArea, verbose_name=_(u'Area'))
+    suggest_temperature = models.IntegerField(verbose_name=_(u'Temperature(°C)'), null=True, blank=True)
     estate_bottled = models.BooleanField(verbose_name=_(u'Estate Bottled'), default=False)
     alcohol_percentage = models.FloatField(verbose_name=_(u'Alcohol(%)'))
     year = models.IntegerField(verbose_name=_(u'Year'))
@@ -167,6 +153,8 @@ class Wine(GenericBaseModel):
     rating = models.PositiveIntegerField(verbose_name=_(u'Rating'), default=1,
                                          help_text=_(u'This field is used wine prices (min=1, max=5)'))
     kind = models.IntegerField(verbose_name=_(u'Kind'), choices=WINE_KIND_LIST)
+    tags = TagField()
+
 
     def __unicode__(self):
         return self.name
@@ -187,15 +175,15 @@ class Recipe(GenericBaseModel):
     category = models.ForeignKey(Category, verbose_name=_(u'Category'))
     is_for_vegan = models.BooleanField(verbose_name=_(u'Vegan Friendly'), default=False)
     is_for_vegetarian = models.BooleanField(verbose_name=_(u'Vegetarian Friendly'), default=False)
-    origin = models.ForeignKey(Region, verbose_name=_(u'Region'), null=True, blank=True)
+    area = models.ForeignKey(AdministrativeArea, verbose_name=_(u'Area'), null=True, blank=True)
     country = models.ForeignKey(Country, verbose_name=_(u'Country'))
-    image = models.ImageField(verbose_name=_(u'Image'), upload_to='images', null=True, blank=True)
+    image = image.FilerImageField(related_name="recipes",verbose_name=_(u'Image'), null=True, blank=True)
     suggested_wine = models.ManyToManyField(Wine, verbose_name=_(u'Suggested Wine'), related_name='recipes', null=True,
                                             blank=True)
     author = models.ForeignKey(User, verbose_name=_(u'Author'))
     fork_origin = models.ForeignKey('self', verbose_name=_(u'Fork Origin'), blank=True, null=True)
     #Use django-tagging application here
-    #tags = TagField()
+    tags = TagField()
     objects = models.Manager()
     pub_objects = PublishedManager()
     veg_objects = VegManager()
@@ -216,7 +204,7 @@ class RecipeStep(GenericBaseModel):
     recipe = models.ForeignKey(Recipe, verbose_name=_(u'Recipe'))
     order = models.IntegerField(verbose_name=_(u'Order'), blank=True, null=True)
     duration = models.IntegerField(verbose_name=_(u'Duration (min.)'), blank=True, null=True)
-    image = models.ImageField(verbose_name=_(u'Image'), upload_to='images', null=True, blank=True)
+    image = image.FilerImageField(related_name="recipes_steps",verbose_name=_(u'Image'),null=True, blank=True)
 
     def __unicode__(self):
         ret = self.text[:40]
